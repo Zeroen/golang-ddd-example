@@ -9,7 +9,7 @@ import (
 
 // DatastorePostController The controller used to create datastores
 type DatastorePostController struct {
-	dc creation.DatastoreCreation
+	dc *creation.DatastoreCreation
 }
 
 // CreationDatastoreParam Body that will be receive when a user wants to create a datastores
@@ -20,7 +20,7 @@ type CreationDatastoreParam struct {
 }
 
 // NewDatastorePostController used to instantiate the controller
-func NewDatastorePostController(e *echo.Echo, dc creation.DatastoreCreation) (c *DatastorePostController) {
+func NewDatastorePostController(e *echo.Echo, dc *creation.DatastoreCreation) (c *DatastorePostController) {
 
 	// Create the DatastorePostController object
 	dpc := &DatastorePostController{

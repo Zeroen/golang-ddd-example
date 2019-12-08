@@ -46,3 +46,7 @@ func (d *DatastoreID) ensureDatastoreIdHasUuidFormat() error {
 	}
 	return nil
 }
+
+func (d *DatastoreID) GetID() string {
+	return d.id
+}

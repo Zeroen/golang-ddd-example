@@ -24,7 +24,7 @@ func NewDatastoreIpAddress(ip string) (*DatastoreIpAddress, error) {
 		return nil, err
 	}
 
-	err = di.ensureDatastoreIdHasUuidFormat()
+	err = di.ensureDatastoreIpAddressHasIpFormat()
 	if err != nil {
 		return nil, err
 	}

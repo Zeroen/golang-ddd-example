@@ -17,7 +17,7 @@ func NewDatastore(id *DatastoreID, path *DatastorePath, ip *DatastoreIpAddress, 
 	}
 }
 
-func (d *Datastore) DatastoreId() *DatastoreID {
+func (d *Datastore) DatastoreID() *DatastoreID {
 	return d.id
 }
 
