@@ -41,8 +41,12 @@ func (d *DatastoreIpAddress) ensureIpAddressCannotBeEmpty() error {
 
 func (d *DatastoreIpAddress) ensureDatastoreIpAddressHasIpFormat() error {
 	match, _ := regexp.MatchString(IpAddressRegExp, d.ip)
-	if match {
+	if !match {
 		return errors.New("IpAddress of the datastore should be complaint with Ip Address format.")
 	}
 	return nil
+}
+
+func (d *DatastoreIpAddress) Value() string {
+	return d.ip
 }

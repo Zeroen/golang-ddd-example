@@ -2,16 +2,19 @@ package creation
 
 import (
 	"ddc.example.com/datastore/domain"
+	shared "ddc.example.com/shared/domain"
 	"errors"
 )
 
 type DatastoreCreation struct {
 	r domain.DatastoreRepository
+	b shared.EventBus
 }
 
-func NewDatastoreCreation(r domain.DatastoreRepository) *DatastoreCreation {
+func NewDatastoreCreation(b shared.EventBus, r domain.DatastoreRepository) *DatastoreCreation {
 	return &DatastoreCreation{
 		r: r,
+		b: b,
 	}
 }
 
@@ -28,6 +31,11 @@ func (dc *DatastoreCreation) Invoke(id *domain.DatastoreID,
 	d := domain.NewDatastore(id, path, ipAddress, name)
 
 	err = dc.r.Save(d)
+	if err != nil {
+		return err
+	}
+
+	err = dc.b.Publish(d.PullDomainEvents())
 	if err != nil {
 		return err
 	}

@@ -35,8 +35,12 @@ func (d *DatastorePath) ensureDatastorePathCannotBeEmpty() error {
 }
 
 func (d *DatastorePath) ensureDatastorePathShouldHavePathFormat() error {
-	if len(d.path) >= 5 {
-		return errors.New("Name of the path should have a datastore path format.")
+	if len(d.path) < 5 {
+		return errors.New("The path should have a datastore path format.")
 	}
 	return nil
+}
+
+func (d *DatastorePath) Value() string {
+	return d.path
 }

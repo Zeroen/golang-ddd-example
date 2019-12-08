@@ -41,12 +41,12 @@ func (d *DatastoreID) ensureDatastoreIdCannotBeEmpty() error {
 
 func (d *DatastoreID) ensureDatastoreIdHasUuidFormat() error {
 	match, _ := regexp.MatchString(UuidRegExp, d.id)
-	if match {
+	if !match {
 		return errors.New("ID of the datastore should be complaint with UUID format.")
 	}
 	return nil
 }
 
-func (d *DatastoreID) GetID() string {
+func (d *DatastoreID) Value() string {
 	return d.id
 }

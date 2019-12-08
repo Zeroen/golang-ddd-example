@@ -35,8 +35,12 @@ func (d *DatastoreName) ensureDatastoreNameCannotBeEmpty() error {
 }
 
 func (d *DatastoreName) ensureDatastoreNameShouldHaveAtLeast5CharsOfLenght() error {
-	if len(d.name) >= 5 {
+	if len(d.name) < 5 {
 		return errors.New("Name of the datastore should have at least 5 characters.")
 	}
 	return nil
+}
+
+func (d *DatastoreName) Value() string {
+	return d.name
 }

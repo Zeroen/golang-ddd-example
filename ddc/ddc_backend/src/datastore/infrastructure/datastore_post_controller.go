@@ -3,6 +3,9 @@ package infrastructure
 import (
 	"ddc.example.com/datastore/application/creation"
 	"ddc.example.com/datastore/domain"
+	"ddc.example.com/scan/application/reports"
+	shared "ddc.example.com/shared/domain"
+	"ddc.example.com/shared/infrastructure"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -20,7 +23,15 @@ type CreationDatastoreParam struct {
 }
 
 // NewDatastorePostController used to instantiate the controller
-func NewDatastorePostController(e *echo.Echo, dc *creation.DatastoreCreation) (c *DatastorePostController) {
+func NewDatastorePostController(e *echo.Echo) (c *DatastorePostController) {
+
+	eb := infrastructure.NewAsyncEventBus(
+		[]shared.DomainEventSubscriber{
+			reports.NewCalculateScanReports(),
+		})
+
+	r := NewDatastoreRepositoryInMemory()
+	dc := creation.NewDatastoreCreation(eb, r)
 
 	// Create the DatastorePostController object
 	dpc := &DatastorePostController{
@@ -29,7 +40,8 @@ func NewDatastorePostController(e *echo.Echo, dc *creation.DatastoreCreation) (c
 
 	// Register endpoint
 	g := e.Group("/datastore")
-	g.POST("/datastore/:id", dpc.Invoke)
+	g.POST(":id", dpc.Invoke)
+	g.POST("/:id", dpc.Invoke)
 
 	// Return the created object
 	return dpc
@@ -39,7 +51,7 @@ func NewDatastorePostController(e *echo.Echo, dc *creation.DatastoreCreation) (c
 func (c *DatastorePostController) Invoke(ctx echo.Context) error {
 
 	// Read the id from path parameters.
-	id := ctx.QueryParam("id")
+	id := ctx.Param("id")
 
 	// Read the PutDatastoreParam parameters from the body
 	var param CreationDatastoreParam

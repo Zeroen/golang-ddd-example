@@ -13,10 +13,10 @@ func NewDatastoreRepositoryInMemory() *DatastoreRepositoryInMemory {
 }
 
 func (r *DatastoreRepositoryInMemory) Save(datastore *domain.Datastore) error {
-	r.datastores[datastore.DatastoreID().GetID()] = datastore
+	r.datastores[datastore.DatastoreID().Value()] = datastore
 	return nil
 }
 
 func (r *DatastoreRepositoryInMemory) Search(id *domain.DatastoreID) (*domain.Datastore, error) {
-	return r.datastores[id.GetID()], nil
+	return r.datastores[id.Value()], nil
 }

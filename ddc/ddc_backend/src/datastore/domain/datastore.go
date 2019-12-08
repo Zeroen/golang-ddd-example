@@ -1,7 +1,12 @@
 package domain
 
+import (
+	"ddc.example.com/shared/domain"
+)
+
 // Datastore it's a domain class
 type Datastore struct {
+	domain.AggregateRoot
 	id   *DatastoreID
 	name *DatastoreName
 	ip   *DatastoreIpAddress
@@ -9,12 +14,17 @@ type Datastore struct {
 }
 
 func NewDatastore(id *DatastoreID, path *DatastorePath, ip *DatastoreIpAddress, name *DatastoreName) *Datastore {
-	return &Datastore{
+	d := &Datastore{
 		id:   id,
 		name: name,
 		ip:   ip,
 		path: path,
 	}
+
+	event := NewDatastoreCreatedEvent(name.Value())
+	d.Record(event)
+
+	return d
 }
 
 func (d *Datastore) DatastoreID() *DatastoreID {
